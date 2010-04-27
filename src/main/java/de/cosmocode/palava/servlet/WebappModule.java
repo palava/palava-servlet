@@ -20,23 +20,30 @@
 
 package de.cosmocode.palava.servlet;
 
-import com.google.inject.Key;
-import com.google.inject.multibindings.Multibinder;
-import com.google.inject.servlet.ServletModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.servlet.ServletModule;
+
 /**
+ * A module which allows easy configuration of different webapps
+ * within a servlet container.
+ * 
  * @author Tobias Sarnowski
+ * @author Willi Schoenborn
  */
 public abstract class WebappModule extends ServletModule {
-    private static Logger LOG = LoggerFactory.getLogger(WebappModule.class);
 
-    public void addWebapp(File location, String context) {
+    /**
+     * Adds the webapp specified by the given location and context.
+     * 
+     * @param location the war file location
+     * @param context the webapp context
+     * @throws IllegalArgumentException if the given location can not be transformed into a url
+     */
+    protected final void addWebapp(File location, String context) {
         try {
             addWebapp(location.toURI().toURL(), context);
         } catch (MalformedURLException e) {
@@ -44,11 +51,23 @@ public abstract class WebappModule extends ServletModule {
         }
     }
 
-    public void addWebapp(URL location, String context) {
+    /**
+     * Adds the webapp specified by the given location and context.
+     * 
+     * @param location the war file location
+     * @param context the webapp context
+     */
+    protected final void addWebapp(URL location, String context) {
         addWebapp(location.toExternalForm(), context);
     }
 
-    public void addWebapp(String location, String context) {
+    /**
+     * Adds the webapp specified by the given location and context.
+     * 
+     * @param location the war file location
+     * @param context the webapp context
+     */
+    protected final void addWebapp(String location, String context) {
         Multibinder.newSetBinder(binder(), Webapp.class).addBinding().toInstance(new Webapp(location, context));
     }
 }

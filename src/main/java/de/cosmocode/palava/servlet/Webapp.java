@@ -21,14 +21,14 @@
 package de.cosmocode.palava.servlet;
 
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
+ * Small value object for location and context mapping.
+ * 
  * @author Tobias Sarnowski
+ * @author Willi Schoenborn 
  */
 public final class Webapp {
-    private static Logger LOG = LoggerFactory.getLogger(Webapp.class);
 
     private final String location;
     private final String context;
@@ -48,9 +48,7 @@ public final class Webapp {
 
     @Override
     public String toString() {
-        return "Webapp{" +
-                "location='" + location + '\'' +
-                ", context='" + context + '\'' +
-                '}';
+        return String.format("Webapp [context=%s, location=%s]", context, location);
     }
+    
 }
