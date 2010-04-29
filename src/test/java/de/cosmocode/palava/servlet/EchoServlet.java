@@ -20,17 +20,38 @@
 
 package de.cosmocode.palava.servlet;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Singleton;
+
 /**
- * Static constant holder class for servlet config key names.
+ * Test servlet.
  *
  * @author Willi Schoenborn
  */
-public final class ServletConfig {
+@Singleton
+public final class EchoServlet extends HttpServlet {
 
-    public static final String PREFIX = "servlet.";
+    private static final long serialVersionUID = 297208794485911599L;
+
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServlet.class);
     
-    private ServletConfig() {
-        
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOG.info("Incoming request on {}", this);
+        final Writer writer = response.getWriter();
+        writer.write(request.getParameterMap().toString());
+        writer.flush();
+        writer.close();
     }
+    
 
 }
